@@ -14,7 +14,7 @@ public class Movimiento : MonoBehaviour
     void Start()
     {
         jugador = GetComponent<Rigidbody>();
-        transform.position = new Vector3(-14.38f, 2.39f, -16.89f);
+        transform.position = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
