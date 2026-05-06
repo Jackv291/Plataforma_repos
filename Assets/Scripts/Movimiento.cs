@@ -24,7 +24,6 @@ public class Movimiento : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-
     }
     // Update is called once per frame
     void Update()
