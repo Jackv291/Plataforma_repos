@@ -7,12 +7,14 @@ using UnityEngine.UIElements;
 
 public class Movimiento : MonoBehaviour
 {
-    public float velocidad = 6.7f;
+    public float velocidad = 7f;
     public float salto = 6.7f;
     public float gravedad = -9.81f;
     public float dash = 30f;
     public float dashDuration = 0.15f;
     public float cooldowndash = 0f;
+    public Animator animator;
+    
 
     public CharacterController controller;
     private Vector3 playerVelocity;
@@ -24,6 +26,8 @@ public class Movimiento : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+
     }
     // Update is called once per frame
     void Update()
@@ -34,6 +38,7 @@ public class Movimiento : MonoBehaviour
             // Slight downward velocity to keep grounded stable
             if (playerVelocity.y < 0f)
                 playerVelocity.y = -2f;
+            animator.SetBool("Saltar", false);
         }
 
         // Read input
@@ -41,20 +46,31 @@ public class Movimiento : MonoBehaviour
         Vector3 move = new Vector3(valorX, 0, 0);
         move = Vector3.ClampMagnitude(move, 1f);
 
-        if (valorX > 0)
+        if (valorX != 0)
+        {
+            animator.SetBool("Mover", true);
+        }
+        else
+        {
+            animator.SetBool("Mover", false);
+        }
+
+            if (valorX > 0)
             ultimadireccion = 1;
         else if (valorX < 0)
             ultimadireccion = -1;
-
-        if (move != Vector3.zero)
-            transform.forward = move;
-
         // Jump using WasPressedThisFrame()
         if (groundedPlayer && Input.GetKeyDown(KeyCode.Space))
         {
+            animator.SetBool("Saltar", true);
             playerVelocity.y = salto * -gravedad;
         }
 
+
+
+     
+
+        //Dash
         if (Input.GetKeyDown(KeyCode.LeftShift) && DashSi)
         {
             int direccion;
