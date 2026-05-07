@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+using UnityEngine.UI;
+using TMPro;
 public class Movimiento : MonoBehaviour
 {
     public float velocidad = 7f;
@@ -14,20 +15,22 @@ public class Movimiento : MonoBehaviour
     public float dashDuration = 0.15f;
     public float cooldowndash = 0f;
     public Animator animator;
-    
-
     public CharacterController controller;
+    public TextMeshProUGUI puntuacionText;
+
     private Vector3 playerVelocity;
     private Vector3 dashVelocity = Vector3.zero;
     private bool groundedPlayer;
     private bool DashSi = true;
-    // Start is called before the first frame update
     private int ultimadireccion = 1;
+    private int puntuacion = 0;
+    // Start is called before the first frame update
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-
+        puntuacionText.text = "Score:" + puntuacion.ToString();
     }
     // Update is called once per frame
     void Update()
@@ -40,11 +43,20 @@ public class Movimiento : MonoBehaviour
                 playerVelocity.y = -2f;
             animator.SetBool("Saltar", false);
         }
-
         // Read input
         float valorX = Input.GetAxis("Horizontal");
         Vector3 move = new Vector3(valorX, 0, 0);
         move = Vector3.ClampMagnitude(move, 1f);
+
+        if (valorX > 0)
+        {
+            transform.localScale = new Vector3(1, 1, 1); // Facing right
+        }
+        else if (valorX < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1); // Facing left
+        }
+
 
         if (valorX != 0)
         {
@@ -65,15 +77,10 @@ public class Movimiento : MonoBehaviour
             animator.SetBool("Saltar", true);
             playerVelocity.y = salto * -gravedad;
         }
-
-
-
-     
-
         //Dash
         if (Input.GetKeyDown(KeyCode.LeftShift) && DashSi)
         {
-            int direccion;
+             int direccion;
             if (valorX > 0)
                 direccion = 1;
             else if (valorX < 0)
@@ -83,7 +90,6 @@ public class Movimiento : MonoBehaviour
 
             StartCoroutine(HazDash(direccion));
         }
-
         if (cooldowndash > 0f)
         {
             cooldowndash -= Time.deltaTime;
@@ -92,14 +98,14 @@ public class Movimiento : MonoBehaviour
                 dashVelocity = Vector3.zero;
                 cooldowndash = 0f;
             }
-        }
 
+        }
         // Apply gravity
         playerVelocity.y += gravedad * Time.deltaTime;
-
         // Move
         Vector3 finalMove = move * velocidad + dashVelocity + Vector3.up * playerVelocity.y;
         controller.Move(finalMove * Time.deltaTime);
+      
     }
     private IEnumerator HazDash(int direccion)
     {   DashSi = false;
@@ -112,5 +118,14 @@ public class Movimiento : MonoBehaviour
         yield return new WaitForSeconds(cooldowndash);
 
         DashSi = true;
+    }
+    private void OnTriggerEnter(Collider colision)
+    {
+        if (colision.tag == "Coleccionable")         
+        {
+            puntuacion++;
+            puntuacionText.text = "Score:" + puntuacion.ToString();
+            colision.gameObject.SetActive(false);
+        }
     }
 }

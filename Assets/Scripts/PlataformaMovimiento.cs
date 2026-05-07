@@ -6,8 +6,6 @@ using UnityEngine;
 public class PlataformaMovimiento : MonoBehaviour
 {
     public float velocidad = 0.5f;
-    public GameObject InicioPlataforma;
-    public GameObject FinPlataforma;
     public GameObject cuboprota;
     // Start is called before the first frame update
     void Start()
@@ -18,15 +16,7 @@ public class PlataformaMovimiento : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       transform.position += Vector3.right * velocidad;
-       if (transform.position.x >= FinPlataforma.transform.position.x)
-        {
-            velocidad = velocidad * -1f;
-        }
-       else if (transform.position.x <= InicioPlataforma.transform.position.x )
-        {
-            velocidad = velocidad * -1;
-        }
+    //Physics.SphereCast(Transform)
     }
 
 
