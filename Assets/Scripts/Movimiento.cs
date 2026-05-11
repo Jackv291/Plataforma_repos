@@ -140,7 +140,6 @@ public class Movimiento : MonoBehaviour
     private IEnumerator HazDash(int direccion)
     {
         DashSi = false; // bloquear nuevos dash hasta finalizar
-
         // Aplicar velocidad horizontal pura en el eje X: derecha (1) o izquierda (-1)
         dashVelocity = Vector3.right * direccion * dash;
 
@@ -186,7 +185,6 @@ public class Movimiento : MonoBehaviour
             barraVida.Damage(0.005f);
         }
     }
-
     private void VictoriaActiva()
     { 
         PantallaVictoria.SetActive(true); // Activa la pantalla de victoria
