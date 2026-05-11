@@ -22,6 +22,7 @@ public class Movimiento : MonoBehaviour
     public GameObject PantallaVictoria;          // referencia a la pantalla de victoria para activarla
 
 
+    private Rigidbody rb;                  // referencia al Rigidbody para aplicar física (si se usa)
     private Vector3 playerVelocity;      // velocidad vertical acumulada (componentes X,Z no se usan aquí)
     private Vector3 dashVelocity = Vector3.zero; // velocidad horizontal temporal aplicada durante el dash
     private bool groundedPlayer;         // true si el CharacterController está apoyado en el suelo
@@ -36,7 +37,7 @@ public class Movimiento : MonoBehaviour
         // Obtener componentes necesarios en el mismo GameObject
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-
+        rb=GetComponent<Rigidbody>();
         // Inicializar UI (asegúrate de asignar 'puntuacionText' en el Inspector)
         puntuacionText.text = "Score:" + puntuacion.ToString();
     }
@@ -59,6 +60,7 @@ public class Movimiento : MonoBehaviour
 
         // --- Lectura de entrada horizontal ---
         float valorX = Input.GetAxis("Horizontal");         // -1 .. 1 según A/D
+        float valorY = Input.GetAxis("Vertical");
         Vector3 move = new Vector3(valorX, 0, 0);          // vector de movimiento horizontal
         move = Vector3.ClampMagnitude(move, 1f);           // normalizar para evitar velocidades > 1 diagonal
 
@@ -80,6 +82,11 @@ public class Movimiento : MonoBehaviour
         else
         {
             animator.SetBool("Mover", false);  // desactivar animación de movimiento
+        }
+
+        if (valorY > 0)
+        {
+
         }
 
         // --- Guardar la última dirección horizontal conocida ---
@@ -177,7 +184,18 @@ public class Movimiento : MonoBehaviour
             }
         }
 
+        if (colision.tag == "Senal")
+        {
+            rb.AddForce(Vector3.right * 30f, ForceMode.Impulse);
+        }
+
     }
+
+    public void veljug(float valor)
+    {         
+        velocidad = valor;
+    }
+
     private void OnTriggerStay (Collider colision)
     {
         if (colision.tag == "Pinchos")

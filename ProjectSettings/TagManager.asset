@@ -8,6 +8,7 @@ TagManager:
   - Coleccionable
   - Pinchos
   - Victoria
+  - Senal
   layers:
   - Default
   - TransparentFX
