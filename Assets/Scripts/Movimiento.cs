@@ -60,7 +60,6 @@ public class Movimiento : MonoBehaviour
 
         // --- Lectura de entrada horizontal ---
         float valorX = Input.GetAxis("Horizontal");         // -1 .. 1 según A/D
-        float valorY = Input.GetAxis("Vertical");
         Vector3 move = new Vector3(valorX, 0, 0);          // vector de movimiento horizontal
         move = Vector3.ClampMagnitude(move, 1f);           // normalizar para evitar velocidades > 1 diagonal
 
@@ -82,11 +81,6 @@ public class Movimiento : MonoBehaviour
         else
         {
             animator.SetBool("Mover", false);  // desactivar animación de movimiento
-        }
-
-        if (valorY > 0)
-        {
-
         }
 
         // --- Guardar la última dirección horizontal conocida ---

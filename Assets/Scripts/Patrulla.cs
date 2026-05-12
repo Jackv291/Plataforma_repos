@@ -8,12 +8,10 @@ public class Patrulla : MonoBehaviour
     public Transform puntoB;
     public float velocidad = 2f;
 
-    private Rigidbody rb;
-    private Transform sitioactual;
+
     // Start is called before the first frame update
     void Start()
     {
-        sitioactual = puntoA.transform;
     }
 
     // Update is called once per frame
